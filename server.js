@@ -1,14 +1,19 @@
 // load up the express framework and body-parser helper
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 // create an instance of express to serve our end points
 const app = express();
 app.use(express.json())
+app.use(cors({
+  origin: '*'
+}));
 
 app.use(function (req, res, next) {
+  console.log('origin', req.headers.origin)
 
-  res.setHeader('Access-Control-Allow-Origin', 'http://0.0.0.0:8080');
+  res.setHeader('Access-Control-Allow-Origin', `${req.headers.origin}`);
 
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
 

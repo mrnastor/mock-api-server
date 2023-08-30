@@ -1,11 +1,10 @@
 const userRoutes = (app, fs) => {
 
-    const ENV_DIR = 'sit'
+    const ENV_DIR = 'uat'
 
     const getDataPath = (req) => {
       const path1 = req.params['0'].replace('/api/', '');
       const subPaths = path1.split('/').slice(-2);
-      console.log('dbg', {subPaths})
       var joined = subPaths.join('_').trim('_')
       if( joined.charAt( 0 ) === '_' ){
         joined = joined.slice( 1 );
