@@ -16,7 +16,7 @@ const userRoutes = (app, fs) => {
 
     app.get('*', (req, res) => {
       const subPath = getDataPath(req);
-      if(subPath.match(/.(jpg|jpeg|svg|png)/g)) {
+      if(subPath.match(/.(jpg|jpeg|svg|png|js)/g)) {
         // default content type
         let contentType = 'text/html'
 
@@ -29,14 +29,16 @@ const userRoutes = (app, fs) => {
             case '.jpg': contentType = 'image/jpg'; break;
             case '.jpeg': contentType = 'image/jpeg'; break;
             case '.svg': contentType = 'image/svg+xml'; break;
-            
+            case '.js': contentType = 'application/x-javascript'; break;
         }
 
         const filePath = `./data/${ENV_DIR}/${subPath}`
         fs.readFile(filePath, (error, data) => {
           // stop the execution and send nothing if the requested file path does not exist.
-          if (error) return
-          
+          if (error) {
+            return
+          }
+
           // otherwise, fetch and show the target image
           res.writeHead(200, { 'Content-Type': contentType })
           res.end(data, 'utf8')
@@ -49,6 +51,7 @@ const userRoutes = (app, fs) => {
       const dataPath = `./data/${ENV_DIR}/${subPath}.json`
       fs.readFile(dataPath, 'utf8', (err, data) => {
         if (err) {
+          res.status(404)
           res.send({ message: `Cannot find ${dataPath}` });
           return;
         }
